@@ -25,10 +25,13 @@ public class Multiply
 
         int[][] result1 = classical(matrix1, matrix2, size);
         int[][] result2 = divideAndConquer(matrix1, matrix2, size);
+        int[][] result3 = strassen(matrix1, matrix2, size);
         System.out.println("Results:");
         printMatrix(result1);
         System.out.println();
         printMatrix(result2);
+        System.out.println();
+        printMatrix(result3);
     }
 
     public static int[][] generateMatrix(int[][] matrix)
@@ -175,10 +178,10 @@ public class Multiply
             int[][] U = strassen(subtract(A21, A11), add(B11, B12), size);
             int[][] V = strassen(subtract(A12, A22), add(B21, B22), size);
 
-            int[][] C11 = subtract(add(P, S), add(T, V));
+            int[][] C11 = add(subtract(S, T), add(P, V));
             int[][] C12 = add(R, T);
             int[][] C21 = add(Q, S);
-            int[][] C22 = subtract(add(P, R), add(Q, U));
+            int[][] C22 = add(subtract(R, Q), add(P, U));
 
             for(int i = 0; i < size; i++)
             {
