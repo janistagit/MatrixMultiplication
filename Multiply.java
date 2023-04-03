@@ -24,8 +24,11 @@ public class Multiply
         printMatrix(matrix2);
 
         int[][] result1 = classical(matrix1, matrix2, size);
+        int[][] result2 = divideAndConquer(matrix1, matrix2, size);
         System.out.println("Results:");
         printMatrix(result1);
+        System.out.println();
+        printMatrix(result2);
     }
 
     public static int[][] generateMatrix(int[][] matrix)
@@ -142,6 +145,29 @@ public class Multiply
     public static int[][] strassen(int[][] A, int[][] B, int n)
     {
         int[][] C = new int[n][n];
+
+        if(n <= 1)
+        {
+            C[0][0] = A[0][0] * B[0][0];
+            return C;
+        }
+        else
+        {
+            int size = n/2;
+
+            int[][][] splitA = divide(A, size);
+            int[][][] splitB = divide(B, size);
+
+            int[][] A11 = splitA[0];
+            int[][] A12 = splitA[1];
+            int[][] A21 = splitA[2];
+            int[][] A22 = splitA[3];
+            int[][] B11 = splitB[0];
+            int[][] B12 = splitB[1];
+            int[][] B21 = splitB[2];
+            int[][] B22 = splitB[3];
+        }
+
         return C;
     }
 
@@ -176,6 +202,21 @@ public class Multiply
             for(int j = 0; j < A.length; j++)
             {
                 result[i][j] = A[i][j] + B[i][j];
+            }
+        }
+
+        return result;
+    }
+
+    public static int[][] subtract(int[][] A, int[][] B)
+    {
+        int[][] result = new int[A.length][A.length];
+
+        for(int i = 0; i < A.length; i++)
+        {
+            for(int j = 0; j < A.length; j++)
+            {
+                result[i][j] = A[i][j] - B[i][j];
             }
         }
 
