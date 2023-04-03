@@ -166,9 +166,33 @@ public class Multiply
             int[][] B12 = splitB[1];
             int[][] B21 = splitB[2];
             int[][] B22 = splitB[3];
-        }
 
-        return C;
+            int[][] P = strassen(add(A11, A22), add(B11, B22), size);
+            int[][] Q = strassen(add(A21, A22), B11, size);
+            int[][] R = strassen(A11, subtract(B12, B22), size);
+            int[][] S = strassen(A22, subtract(B21, B11), size);
+            int[][] T = strassen(add(A11, A12), B22, size);
+            int[][] U = strassen(subtract(A21, A11), add(B11, B12), size);
+            int[][] V = strassen(subtract(A12, A22), add(B21, B22), size);
+
+            int[][] C11 = subtract(add(P, S), add(T, V));
+            int[][] C12 = add(R, T);
+            int[][] C21 = add(Q, S);
+            int[][] C22 = subtract(add(P, R), add(Q, U));
+
+            for(int i = 0; i < size; i++)
+            {
+                for(int j = 0; j < size; j++)
+                {
+                    C[i][j] = C11[i][j];
+                    C[i][j + size] = C12[i][j];
+                    C[i + size][j] = C21[i][j];
+                    C[i + size][j + size] = C22[i][j];
+                }
+            }
+
+            return C;
+        }
     }
 
     public static int[][][] divide(int[][] matrix, int size)
