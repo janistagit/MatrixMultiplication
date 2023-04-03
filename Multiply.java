@@ -89,6 +89,17 @@ public class Multiply
     public static int[][] divideAndConquer(int[][] A, int[][] B, int n)
     {
         int[][] C = new int[n][n];
+
+        if(n <= 1)
+        {
+            C[0][0] = A[0][0] * B[0][0];
+            return C;
+        }
+        else
+        {
+            int size = n/2;
+        }
+
         return C;
     }
 
@@ -96,5 +107,27 @@ public class Multiply
     {
         int[][] C = new int[n][n];
         return C;
+    }
+
+    public static int[][][] divide(int[][] matrix, int size)
+    {
+        int[][] mat11 = new int[size][size];
+        int[][] mat12 = new int[size][size];
+        int[][] mat21 = new int[size][size];
+        int[][] mat22 = new int[size][size];
+
+        for(int i = 0; i < size; i++)
+        {
+            for(int j = 0; j < size; j++)
+            {
+                mat11[i][j] = matrix[i][j];
+                mat12[i][j] = matrix[i][j + size];
+                mat21[i][j] = matrix[i + size][j];
+                mat22[i][j] = matrix[i + size][j + size];
+            }
+        }
+
+        int[][][] results =  {mat11, mat12, mat21, mat22};
+        return results;
     }
 }
