@@ -98,9 +98,45 @@ public class Multiply
         else
         {
             int size = n/2;
-        }
 
-        return C;
+            int[][][] splitA = divide(A, size);
+            int[][][] splitB = divide(B, size);
+
+            int[][] A11 = splitA[0];
+            int[][] A12 = splitA[1];
+            int[][] A21 = splitA[2];
+            int[][] A22 = splitA[3];
+            int[][] B11 = splitB[0];
+            int[][] B12 = splitB[1];
+            int[][] B21 = splitB[2];
+            int[][] B22 = splitB[3];
+
+            int[][] X1 = divideAndConquer(A11, B11, size);
+            int[][] X2 = divideAndConquer(A12, B21, size);
+            int[][] X3 = divideAndConquer(A11, B12, size);
+            int[][] X4 = divideAndConquer(A12, B22, size);
+            int[][] X5 = divideAndConquer(A21, B11, size);
+            int[][] X6 = divideAndConquer(A22, B21, size);
+            int[][] X7 = divideAndConquer(A21, B12, size);
+            int[][] X8 = divideAndConquer(A22, B22, size);
+
+            int[][] C11 = add(X1, X2);
+            int[][] C12 = add(X3, X4);
+            int[][] C21 = add(X5, X6);
+            int[][] C22 = add(X7, X8);
+
+            for(int i = 0; i < size; i++)
+            {
+                for(int j = 0; j < size; j++)
+                {
+                    C[i][j] = C11[i][j];
+                    C[i][j + size] = C12[i][j];
+                    C[i + size][j] = C21[i][j];
+                    C[i + size][j + size] = C22[i][j];
+                }
+            }
+            return C;
+        }
     }
 
     public static int[][] strassen(int[][] A, int[][] B, int n)
@@ -129,5 +165,20 @@ public class Multiply
 
         int[][][] results =  {mat11, mat12, mat21, mat22};
         return results;
+    }
+
+    public static int[][] add(int[][] A, int[][] B)
+    {
+        int[][] result = new int[A.length][A.length];
+
+        for(int i = 0; i < A.length; i++)
+        {
+            for(int j = 0; j < A.length; j++)
+            {
+                result[i][j] = A[i][j] + B[i][j];
+            }
+        }
+
+        return result;
     }
 }
