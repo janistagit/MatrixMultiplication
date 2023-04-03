@@ -17,6 +17,15 @@ public class Multiply
 
         matrix1 = fillMatrix(matrix1, scan);
         matrix2 = fillMatrix(matrix2, scan);
+
+        System.out.println("Matrix 1:");
+        printMatrix(matrix1);
+        System.out.println("Matrix 2:");
+        printMatrix(matrix2);
+
+        int[][] result1 = classical(matrix1, matrix2, size);
+        System.out.println("Results:");
+        printMatrix(result1);
     }
 
     public static int[][] generateMatrix(int[][] matrix)
@@ -65,9 +74,11 @@ public class Multiply
         {
             for(int j = 0; j < n; j++)
             {
+                C[i][j] = 0;
+
                 for(int k = 0; k < n; k++)
                 {
-                    C[i][j] = A[i][k] * B[k][j];
+                    C[i][j] += A[i][k] * B[k][j];
                 }
             }
         }
