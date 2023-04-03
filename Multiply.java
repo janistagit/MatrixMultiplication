@@ -2,15 +2,46 @@
 // Janista Gitbumrungsin
 // Project 1 Matrix Multiplication
 
+import java.util.Scanner;
+
 public class Multiply
 {
     public static void main(String[] args) 
     {
-        
+        Scanner scan = new Scanner(System.in);
+        System.out.println("Enter size of matrices: ");
+        int size = scan.nextInt();
+
+        int[][] matrix1 = new int[size][size];
+        int[][] matrix2 = new int[size][size];
+
+        matrix1 = fillMatrix(matrix1, scan);
+        matrix2 = fillMatrix(matrix2, scan);
     }
 
     public static int[][] generateMatrix(int[][] matrix)
     {
+        for(int i = 0; i < matrix.length; i++)
+        {
+            for(int j = 0; j < matrix.length; j++)
+            {
+                matrix[i][j] = (int)(Math.random() * (100) - 50);
+            }
+        }
+        return matrix;
+    }
+
+    public static int[][] fillMatrix(int[][] matrix, Scanner scan)
+    {
+        for(int i = 0; i < matrix.length; i++)
+        {
+            for(int j = 0; j < matrix.length; j++)
+            {
+                System.out.printf("Enter value of [%d][%d]: ", i, j);
+                matrix[i][j] = scan.nextInt();
+            }
+        }
+
         return matrix;
     }
 
