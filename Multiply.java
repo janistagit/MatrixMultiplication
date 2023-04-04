@@ -6,8 +6,16 @@ import java.util.Scanner;
 
 public class Multiply
 {
+    private static long classicStart;
+    private static long classicEnd;
+    private static long dncStart;
+    private static long dncEnd;
+    private static long strassenStart;
+    private static long strassenEnd;
+
     public static void main(String[] args) 
     {
+        System.out.println("\n----------- MATRIX MULTIPLIER ----------");
         Scanner scan = new Scanner(System.in);
         System.out.println("Enter size of matrices: ");
         int size = scan.nextInt();
@@ -15,23 +23,52 @@ public class Multiply
         int[][] matrix1 = new int[size][size];
         int[][] matrix2 = new int[size][size];
 
-        matrix1 = fillMatrix(matrix1, scan);
-        matrix2 = fillMatrix(matrix2, scan);
+        int option = 0;
 
-        System.out.println("Matrix 1:");
-        printMatrix(matrix1);
+        while(option != 1 && option != 2)
+        {
+            System.out.println("Would you like to manually fill in the matrices or randomly generate them?\nEnter 1 for manual, 2 for random: ");
+            option = scan.nextInt();
+        }
+
+        if(option == 1)
+        {
+            System.out.println("\nEnter values for Matrix 1:");
+            matrix1 = fillMatrix(matrix1, scan);
+            System.out.println("\nEnter values for Matrix 2:");
+            matrix2 = fillMatrix(matrix2, scan);
+        }
+        else if(option == 2)
+        {
+            matrix1 = generateMatrix(matrix1);
+            matrix2 = generateMatrix(matrix2);
+        }
+
+
+        System.out.println("\nMatrix 1:");
+        //printMatrix(matrix1);
         System.out.println("Matrix 2:");
-        printMatrix(matrix2);
+        //printMatrix(matrix2);
 
         int[][] result1 = classical(matrix1, matrix2, size);
         int[][] result2 = divideAndConquer(matrix1, matrix2, size);
         int[][] result3 = strassen(matrix1, matrix2, size);
-        System.out.println("Results:");
-        printMatrix(result1);
+        
+        System.out.println("\nResults:");
+        System.out.println("Classical:");
+        //printMatrix(result1);
+        System.out.println("Total time: " + (classicEnd - classicStart) + " nanoseconds");
+
         System.out.println();
-        printMatrix(result2);
+        System.out.println("Divide and Conquer:");
+        //printMatrix(result2);
+        System.out.println("Total time: " + (dncEnd - dncStart) + " nanoseconds");
+
         System.out.println();
-        printMatrix(result3);
+        System.out.println("Strassen's:");
+        //printMatrix(result3);
+        System.out.println("Total time: " + (strassenEnd - strassenStart) + " nanoseconds");
+        System.out.println();
     }
 
     public static int[][] generateMatrix(int[][] matrix)
@@ -75,6 +112,7 @@ public class Multiply
     public static int[][] classical(int[][] A, int[][] B, int n)
     {
         int[][] C = new int[n][n];
+        classicStart = System.nanoTime();
 
         for(int i = 0; i < n; i++)
         {
@@ -89,16 +127,20 @@ public class Multiply
             }
         }
 
+        classicEnd = System.nanoTime();
         return C;
     }
 
     public static int[][] divideAndConquer(int[][] A, int[][] B, int n)
     {
         int[][] C = new int[n][n];
+        dncStart = System.nanoTime();
 
         if(n <= 1)
         {
             C[0][0] = A[0][0] * B[0][0];
+
+            dncEnd = System.nanoTime();
             return C;
         }
         else
@@ -141,6 +183,8 @@ public class Multiply
                     C[i + size][j + size] = C22[i][j];
                 }
             }
+
+            dncEnd = System.nanoTime();
             return C;
         }
     }
@@ -148,10 +192,13 @@ public class Multiply
     public static int[][] strassen(int[][] A, int[][] B, int n)
     {
         int[][] C = new int[n][n];
+        strassenStart = System.nanoTime();
 
         if(n <= 1)
         {
             C[0][0] = A[0][0] * B[0][0];
+
+            strassenEnd = System.nanoTime();
             return C;
         }
         else
@@ -194,6 +241,7 @@ public class Multiply
                 }
             }
 
+            strassenEnd = System.nanoTime();
             return C;
         }
     }
