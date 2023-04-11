@@ -4,6 +4,11 @@
 
 import java.util.Scanner;
 
+/**
+ * Executes three different algorithms for matrix multiplication and prints execution time of each algorithm in milliseconds
+ * Values of each matrix can be printed by uncommenting the lines
+ * @author Janista Gitbumrungsin
+ */
 public class Multiply
 {
     private static long classicStart;
@@ -25,7 +30,7 @@ public class Multiply
 
         int option = 0;
 
-        while(option != 1 && option != 2)
+        while(option != 1 && option != 2) //Loop until user chooses manual vs random generation
         {
             System.out.println("Would you like to manually fill in the matrices or randomly generate them?\nEnter 1 for manual, 2 for random: ");
             option = scan.nextInt();
@@ -46,31 +51,45 @@ public class Multiply
 
 
         System.out.println("\nMatrix 1:");
-        //printMatrix(matrix1);
+        //printMatrix(matrix1); //Uncomment to print values of matrix
         System.out.println("Matrix 2:");
-        //printMatrix(matrix2);
+        //printMatrix(matrix2); //Uncomment to print values of matrix
 
+        classicStart = System.nanoTime();
         int[][] result1 = classical(matrix1, matrix2, size);
+        classicEnd = System.nanoTime();
+
+        dncStart = System.nanoTime();
         int[][] result2 = divideAndConquer(matrix1, matrix2, size);
+        dncEnd = System.nanoTime();
+
+        strassenStart = System.nanoTime();
         int[][] result3 = strassen(matrix1, matrix2, size);
+        strassenEnd = System.nanoTime();
         
         System.out.println("\nResults:");
         System.out.println("Classical:");
-        //printMatrix(result1);
-        System.out.println("Total time: " + (classicEnd - classicStart) + " nanoseconds");
+        //printMatrix(result1); //Uncomment to print values of matrix
+        System.out.println("Total time: " + (double)((classicEnd - classicStart)/1000000.0) + " ms");
 
         System.out.println();
         System.out.println("Divide and Conquer:");
-        //printMatrix(result2);
-        System.out.println("Total time: " + (dncEnd - dncStart) + " nanoseconds");
+        //printMatrix(result2); //Uncomment to print values of matrix
+        System.out.println("Total time: " + (double)((dncEnd - dncStart)/1000000.0) + " ms");
 
         System.out.println();
         System.out.println("Strassen's:");
-        //printMatrix(result3);
-        System.out.println("Total time: " + (strassenEnd - strassenStart) + " nanoseconds");
+        //printMatrix(result3); //Uncomment to print values of matrix
+        System.out.println("Total time: " + (double)((strassenEnd - strassenStart)/1000000.0) + " ms");
+
         System.out.println();
     }
 
+    /**
+     * Generates random values to input into a matrix, ranging from integers of -50 to 50
+     * @param matrix A 2d array representing a matrix
+     * @return A 2d array of a matrix filled with random integers
+     */
     public static int[][] generateMatrix(int[][] matrix)
     {
         for(int i = 0; i < matrix.length; i++)
@@ -83,6 +102,12 @@ public class Multiply
         return matrix;
     }
 
+    /**
+     * Prompts user to individually enter an integer value for every value of a matrix and assigns them to the matrix
+     * @param matrix A 2d array representing a matrix
+     * @param scan A Scanner to take user input
+     * @return A 2d array of a matrix filled with the user's input
+     */
     public static int[][] fillMatrix(int[][] matrix, Scanner scan)
     {
         for(int i = 0; i < matrix.length; i++)
@@ -97,6 +122,10 @@ public class Multiply
         return matrix;
     }
 
+    /**
+     * Prints out every value of a matrix in the format of the matrix
+     * @param matrix A 2d array representing a matrix
+     */
     public static void printMatrix(int[][] matrix)
     {
         for(int i = 0; i < matrix.length; i++)
@@ -109,10 +138,16 @@ public class Multiply
         }
     }
 
+    /**
+     * Performs classic matrix multiplcation on two matrices
+     * @param A A 2d array representing the first matrix to be multiplied
+     * @param B A 2d array representing the second matrix to be multiplied
+     * @param n An integer representing the size of the matrices which are of size n x n
+     * @return A 2d array representing the matrix that results from the multiplcation
+     */
     public static int[][] classical(int[][] A, int[][] B, int n)
     {
         int[][] C = new int[n][n];
-        classicStart = System.nanoTime();
 
         for(int i = 0; i < n; i++)
         {
@@ -127,20 +162,24 @@ public class Multiply
             }
         }
 
-        classicEnd = System.nanoTime();
         return C;
     }
 
+    /**
+     * Performs divide and conquer matrix multiplcation on two matrices
+     * @param A A 2d array representing the first matrix to be multiplied
+     * @param B A 2d array representing the second matrix to be multiplied
+     * @param n An integer representing the size of the matrices which are of size n x n
+     * @return A 2d array representing the matrix that results from the multiplcation
+     */
     public static int[][] divideAndConquer(int[][] A, int[][] B, int n)
     {
         int[][] C = new int[n][n];
-        dncStart = System.nanoTime();
 
         if(n <= 1)
         {
             C[0][0] = A[0][0] * B[0][0];
 
-            dncEnd = System.nanoTime();
             return C;
         }
         else
@@ -184,21 +223,25 @@ public class Multiply
                 }
             }
 
-            dncEnd = System.nanoTime();
             return C;
         }
     }
 
+    /**
+     * Performs Strassen's algorithm for matrix multiplcation on two matrices
+     * @param A A 2d array representing the first matrix to be multiplied
+     * @param B A 2d array representing the second matrix to be multiplied
+     * @param n An integer representing the size of the matrices which are of size n x n
+     * @return A 2d array representing the matrix that results from the multiplcation
+     */
     public static int[][] strassen(int[][] A, int[][] B, int n)
     {
         int[][] C = new int[n][n];
-        strassenStart = System.nanoTime();
 
         if(n <= 1)
         {
             C[0][0] = A[0][0] * B[0][0];
 
-            strassenEnd = System.nanoTime();
             return C;
         }
         else
@@ -241,11 +284,16 @@ public class Multiply
                 }
             }
 
-            strassenEnd = System.nanoTime();
             return C;
         }
     }
 
+    /**
+     * Splits a matrix into four segments according to a specified segment size
+     * @param matrix A 2d array representing a matrix
+     * @param size An integer representing the size of the new submatrices
+     * @return A 3d array to store 2d arrays that each represent the resulting submatrices
+     */
     public static int[][][] divide(int[][] matrix, int size)
     {
         int[][] mat11 = new int[size][size];
@@ -268,6 +316,12 @@ public class Multiply
         return results;
     }
 
+    /**
+     * Adds together the values of two matrices
+     * @param A A 2d array representing the first matrix to be added
+     * @param B A 2d array representing the second matrix to be added
+     * @return A 2d array representing the result of the addition
+     */
     public static int[][] add(int[][] A, int[][] B)
     {
         int[][] result = new int[A.length][A.length];
@@ -283,6 +337,12 @@ public class Multiply
         return result;
     }
 
+    /**
+     * Subtracts the values of two matrices
+     * @param A A 2d array representing the first matrix to be subtracted from
+     * @param B A 2d array representing the second matrix to be subtracted
+     * @return A 2d array representing the result of the subtraction
+     */
     public static int[][] subtract(int[][] A, int[][] B)
     {
         int[][] result = new int[A.length][A.length];
